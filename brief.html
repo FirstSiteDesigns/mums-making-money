@@ -88,6 +88,7 @@ footer a{color:rgba(255,255,255,0.4);text-decoration:none;}
 .ob-form .form-group{display:flex;flex-direction:column;gap:0.35rem;}
 .ob-form label{font-size:0.68rem;font-weight:500;color:var(--charcoal);letter-spacing:0.1em;text-transform:uppercase;}
 .ob-form input,.ob-form textarea,.ob-form select{font-family:var(--font-body);font-size:0.92rem;background:var(--cream);border:1px solid var(--border);padding:0.8rem 1rem;color:var(--charcoal);outline:none;transition:border-color 0.2s;width:100%;font-weight:300;border-radius:0;appearance:none;}
+.ob-form input[type=checkbox],.ob-form input[type=radio]{width:auto;padding:0;appearance:auto;background:transparent;border:none;outline:revert;}
 .ob-form input:focus,.ob-form textarea:focus,.ob-form select:focus{border-color:var(--charcoal);}
 .ob-form textarea{resize:vertical;min-height:100px;}
 .form-note{font-size:0.75rem;color:var(--light);font-weight:300;margin-top:0.2rem;}
@@ -101,6 +102,10 @@ footer a{color:rgba(255,255,255,0.4);text-decoration:none;}
 .vibe-option{display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;color:var(--mid);font-weight:300;padding:0.6rem 0.75rem;border:1px solid var(--border);cursor:pointer;transition:border-color 0.2s;}
 .vibe-option:hover{border-color:var(--charcoal);}
 .vibe-option input{width:14px;height:14px;accent-color:var(--charcoal);flex-shrink:0;}
+.vibe-grid{display:flex;flex-direction:column;gap:0.5rem;}
+.vibe-option:has(input:checked){border-color:var(--charcoal);background:var(--cream);color:var(--charcoal);}
+.checkbox-row:has(input:checked){color:var(--charcoal);}
+.radio-row:has(input:checked){color:var(--charcoal);}
 .form-warning{background:var(--charcoal);padding:1.75rem 2rem;margin-top:2.5rem;}
 .form-warning p{font-size:0.9rem;color:var(--white);font-weight:500;line-height:1.65;}
 .btn-submit-ob{background:var(--charcoal);color:var(--white);border:none;padding:1.1rem 2.5rem;font-family:var(--font-body);font-size:0.85rem;font-weight:500;cursor:pointer;letter-spacing:0.1em;text-transform:uppercase;transition:background 0.2s;margin-top:2rem;width:100%;}
@@ -123,6 +128,7 @@ footer a{color:rgba(255,255,255,0.4);text-decoration:none;}
     <li><a href="index.html#home">Home</a></li>
     <li><a href="index.html#pricing">Pricing</a></li>
     <li><a href="index.html#how-it-works">How It Works</a></li>
+    <li><a href="portfolio.html">Portfolio</a></li>
     <li><a href="index.html#about">About</a></li>
     <li><a href="index.html#contact" class="nav-cta">Enquire</a></li>
   </ul>
@@ -141,7 +147,8 @@ footer a{color:rgba(255,255,255,0.4);text-decoration:none;}
 </div>
 
 <div class="brief-form-wrap">
-  <form class="ob-form" id="ob-form" onsubmit="handleObSubmit(event)">
+  <form action="https://formspree.io/f/xaqvqbwb" method="POST">
+    <input type="hidden" name="form-name" value="brief">
 
     <h3 class="form-section-title">Business Basics</h3>
     <div class="form-row">
@@ -290,7 +297,7 @@ footer a{color:rgba(255,255,255,0.4);text-decoration:none;}
     </div>
 
     <button type="submit" class="btn-submit-ob" id="ob-submit-btn">Submit my brief &rarr;</button>
-    <p class="form-note" style="text-align:center;margin-top:0.75rem;">We will be in touch within 24 hours to confirm receipt.</p>
+    <p class="form-note" style="text-align:center;margin-top:0.75rem;">We will send you your preview within 24 hours.</p>
   </form>
 </div>
 
@@ -305,10 +312,11 @@ window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',wind
 document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(){document.getElementById('nav-links').classList.remove('open');});});
 function handleObSubmit(e){
   e.preventDefault();
+  var form=document.getElementById('ob-form');
   var btn=document.getElementById('ob-submit-btn');
-  btn.textContent='Brief submitted. We will be in touch within 24 hours.';
-  btn.style.background='#5A7358';
+  btn.textContent='Submitting…';
   btn.disabled=true;
+  fetch('/',{method:'POST',body:new FormData(form)}).then(function(){btn.textContent='We will send you your preview within 24 hours.';btn.style.background='#5A7358';}).catch(function(){btn.textContent='Something went wrong. Please try again.';btn.disabled=false;});
 }
 </script>
 </body>
